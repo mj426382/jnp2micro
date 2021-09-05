@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>app interface</title>
+<style>
+</style>
+</head>
+<body>
+	<link rel="stylesheet"  href="{% static 'css/view.css'  %}">
+
+	<div class="menu_bar">
+		<div class="dropdown">
+		  <button class="dropbtn">Menu</button>
+		  <div class="dropdown-content">
+			<a href="/polls/add_file">Add file</a>
+			<a href="/polls/add_directory">Add directory</a>
+			<a href="/polls/delete_file">Delete file</a>
+			<a href="/polls/delete_directory">Delete directory</a>
+			<a href="/polls/">Main page</a>
+		  </div>
+		</div>
+	</div>
+
+	<div class="files_selecting_dialog_added">
+	
+	</div>
+
+	<div class="files_selecting_dialog">
+		<div class="btn-group">
+			{% if latest_directories_list %}
+			<ul>
+			{% for dir in latest_directories_list %}
+			{% if dir.is_active %}
+			<a href="/polls/delete_directory/{{ dir.id }}/"><button>{{ dir.ret_name }}</button></a>
+			{% endif %}
+			{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="text_field_for_program_code">
+		<form action="www.html" method="get">
+			<textarea  class="text_area" name="description">
+			
+			</textarea>
+		</form>
+	</div>
+
+	<div class="focus_on_program_elements">
+		<p>focus on program elements</p>
+	</div>
+
+	<div class="container_for_tab_data">
+		<p>container for tab data</p>
+	</div>
+
+	<div class="tab_line">
+		<div class="btn-line-group">
+			<button>Provers</button>
+			<button>VCs</button>
+			<button>Result</button>
+		</div>
+	</div>
+
+	</body>
+</html>

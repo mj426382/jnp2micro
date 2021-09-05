@@ -1,0 +1,407 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>app interface</title>
+<style>
+</style>
+</head>
+<body>
+	<link rel="stylesheet"  href="{% static 'css/view.css'  %}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	
+	<script> 
+	var cos;
+	var focus = '';
+	var is_hide = false;
+	var basic;
+	var result = '';
+	</script>
+		
+	<div class="menu_bar">
+		<div class="dropdown">
+		  <button class="dropbtn">Menu</button>
+		  <div class="dropdown-content">
+			<a onclick="get_add_file()">Add task</a>
+			<a onclick="get_file_to_delete()">Delete task</a>
+			<a onclick="get_add_directory()">Add directory</a>
+			<a onclick="get_directory_to_delete()">Delete directory</a>
+			<a onclick="get_group_project()">Make group project</a>
+			<a onclick="open_group_project()">Open group project</a>
+			<a onclick="delete_group_project()">Delete group project</a>
+			<a onclick="add_group_task()">Add group task</a>
+			<a onclick="delete_task()">Delete group task</a>
+			<a onclick="get_basic()">Main page</a>
+		  </div>
+		</div>
+		
+		{% if login %}
+		Zalogowany jako : 
+		{{ login }}
+		<div class="dropdown">
+		<a href="/polls/logout"><button class="dropbtn">Log out</button></a>
+		</div>
+		{% else %}
+		<div class="dropdown">
+		<a href="/polls/login"><button class="dropbtn">Log in</button></a>
+		</div>
+		<div class="dropdown">
+		<a href="/polls/register"><button class="dropbtn">Sign in</button></a>
+		</div>
+		{% endif %}
+	</div>
+
+	<div class="files_selecting_dialog_added">
+	
+	</div>
+	
+	<script>
+	
+	async function delete_task() {
+	await $.ajax({
+			type: 'GET',
+			url: '/polls/get_group_tasks/',
+			data: {},
+			success: data => {
+				console.log(data)
+				cos = JSON.parse(data)
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		
+		fileski = '';
+		for (var i = 0; i < cos.length; i++) {
+			file_id = cos[i].pk;
+			console.log(cos[i].pk)
+			fileski = fileski + '<a href="/polls/delete_task/' + cos[i].pk + '/"><button>' + cos[i].fields.name + '(' + cos[i].fields.owner + '+' + cos[i].fields.coowner +')' + '(' + cos[i].fields.project_name + ')' + '</button></a>';
+		}
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+	
+	function add_group_task(){
+				cos = '<h4>Add group:</h4><div class="btn-group"><form action="{% url "polls:add_group_task" %}" method="post" enctype="multipart/form-data">{% csrf_token %}Group project:<input type="text" name="directory_name" required id="directory_id"/>Description:<input type="text" name="optional_description" required id="optional_id"/><br/>Name:<br/><input type="text" name="filename" required id="owner_id"/><br/><input type="submit" value="Add"/></form></div>'
+		document.getElementById("sthmy").innerHTML = cos;
+	}
+	
+	async function delete_group_project() {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_group_projects/',
+			data: {},
+			success: data => {
+				console.log(data)
+				cos = JSON.parse(data)
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		
+		fileski = '';
+		for (var i = 0; i < cos.length; i++) {
+			file_id = cos[i].pk;
+			console.log(cos[i].pk)
+			fileski = fileski + '<a href="/polls/delete_group_project/' + cos[i].pk + '/"><button>' + cos[i].fields.name + '(' + cos[i].fields.owner + '+' + cos[i].fields.coowner +')' + '</button></a>';
+		}
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+	
+	async function get_group_task(id, task_id) {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_task/' + id + '/' + task_id + '/',
+			data: {},
+			success: data => {
+				console.log(data)
+				cos = JSON.parse(data)
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		console.log(cos[0]);
+		wyjscie_moje = "description:\n" + cos[0].fields.optional_description.toString() + '\ndate:\n' + cos[0].fields.pub_date.toString();
+		document.getElementById("text_change").innerHTML = wyjscie_moje;
+		focus = cos.frama;
+		result = cos.result;
+	}
+	
+	async function get_project(id) {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_project/' + id + '/',
+			data: {},
+			success: data => {
+				console.log(data)
+				cos = JSON.parse(data)
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		
+		fileski = '';
+		for (var i = 0; i < cos.length; i++) {
+			file_id = cos[i].pk;
+			console.log(cos[i].pk)
+			fileski = fileski + '<button onclick=get_group_task(' + id + ',' + cos[i].pk + ')>' + cos[i].fields.name + '</button>';
+		}
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+	
+	async function open_group_project() {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_group_projects/',
+			data: {},
+			success: data => {
+				console.log(data)
+				cos = JSON.parse(data)
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		
+		fileski = '';
+		for (var i = 0; i < cos.length; i++) {
+			file_id = cos[i].pk;
+			console.log(cos[i].pk)
+			fileski = fileski + '<button onclick=get_project(' + cos[i].pk + ')>' + cos[i].fields.name + '(' + cos[i].fields.owner + '+' + cos[i].fields.coowner +')' + '</button>';
+		}
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+	
+	function get_group_project() {
+		fileski = '<h4>Make group project:</h4><div class="btn-group"><form action="{% url "polls:make_group_project" %}" method="post" enctype="multipart/form-data">{% csrf_token %}Cooperator:<input type="text" name="cooperator" required id="cooperator_id"/>Description:<input type="text" name="optional_description" required id="optional_id"/>Name:<input type="text" name="filename" required id="name_id"/><br/><input type="submit" value="Add"/></form></div>'
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+		
+	async function get_file(directory_id, file_id) {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_json_data/' + directory_id + '/' + file_id + '/',
+			data: {},
+			success: data => {
+				console.log(data)
+				cos = JSON.parse(data)
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		console.log(cos[0]);
+		wyjscie_moje = "description:\n" + cos[0].fields.optional_description.toString() + '\ndate:\n' + cos[0].fields.creation_date.toString();
+		document.getElementById("text_change").innerHTML = wyjscie_moje;
+		focus = cos.frama;
+		result = cos.result;
+	}
+		
+	async function get_directory(directory_id) {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_json_data/' + directory_id + '/',
+			data: {},
+			success: data => {
+				json = JSON.parse(data)
+				console.log(json)
+				cos = json
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		fileski = '';
+		for (var i = 0; i < cos.length; i++) {
+			file_id = cos[i].pk;
+			console.log(cos[i].pk)
+			fileski = fileski + '<button onclick=get_file(' + directory_id + ',' + file_id + ')>' + cos[i].fields.name + '</button>';
+		}
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+	
+	async function get_directory_to_delete() {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_json_data/',
+			data: {},
+			success: data => {
+				json = JSON.parse(data)
+				console.log(json)
+				cos = json
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		fileski = '';
+		for (var i = 0; i < cos.length; i++) {
+			file_id = cos[i].pk;
+			console.log(cos[i].pk)
+			fileski = fileski + '<a href="/polls/delete_directory/' + cos[i].pk + '/"><button>' + cos[i].fields.name + '</button></a>';
+		}
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+	
+	
+	async function get_file_to_delete() {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_json_data/files/',
+			data: {},
+			success: data => {
+				json = JSON.parse(data)
+				console.log(json)
+				cos = json
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		fileski = '';
+		for (var i = 0; i < cos.length; i++) {
+			file_id = cos[i].pk;
+			console.log(cos[i].pk)
+			fileski = fileski + '<a href="/polls/delete_file/' + cos[i].pk + '/"><button>' + cos[i].fields.name + '</button></a>';
+		}
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+	
+	async function get_add_file() {
+		cos = '<h4>Add file:</h4><div class="btn-group"><form action="{% url "polls:add_file_acc" %}" method="post" enctype="multipart/form-data">{% csrf_token %}Directory:<input type="text" name="directory_name" required id="directory_id"/>Description:<input type="text" name="optional_description" required id="optional_id"/>Name:<input type="text" name="filename" required id="owner_id"/><br/><input type="submit" value="Add"/></form></div>'
+		document.getElementById("sthmy").innerHTML = cos;
+	}
+	
+	async function get_add_directory() {
+		cos = '<h4>Add file:</h4><div class="btn-group"><form action="{% url "polls:add_directory_acc" %}" method="post" enctype="multipart/form-data">{% csrf_token %}Directory name:<input type="text" name="directory_name" required id="directory_id"/><br/><input type="submit" value="Add"/></form></div>'
+		document.getElementById("sthmy").innerHTML = cos;
+	}
+	
+	async function get_basic() {
+		cos = basic;
+		document.getElementById("sthmy").innerHTML = cos;
+	}
+	
+	
+	async function get_directories() {
+		await $.ajax({
+			type: 'GET',
+			url: '/polls/get_json_data/',
+			data: {},
+			success: data => {
+				json = JSON.parse(data)
+				console.log(json)
+				cos = json
+			},
+			error: error => {
+				alert('ERROR')
+			},
+			
+		})
+		fileski = '';
+		for (var i = 0; i < cos.length; i++) {
+			file_id = cos[i].pk;
+			console.log(cos[i].pk)
+			fileski = fileski + '<button onclick="get_directory(' + cos[i].pk + ')">' + cos[i].fields.name + '</button>';
+		}
+		document.getElementById("sthmy").innerHTML = fileski;
+	}
+	
+	get_directories();
+	
+	</script>
+
+	<div class="files_selecting_dialog" >
+		<div class="btn-group">
+			<div id="sthmy">
+			{% if latest_directories_list %}
+			<ul>
+			<button onclick="get_directories()">show your projects</button>
+			</ul>
+			{% endif %}
+			
+			{% if files_to_show %}
+			<ul>
+			{% for file in files_to_show %}
+			{% if file.is_active %}
+			<a href="/polls/{{ dir_id }}/{{ file.id }}/"><button>{{ file.name }}</button></a>
+			{% endif %}
+			{% endfor %}
+			</ul>
+			{% endif %}
+			
+			{% if not files_to_show and not latest_directories_list %}
+			You aren't log in or you haven't any directories added!
+			{% endif %}
+			</div>
+		</div>
+	</div>
+	
+	<script>
+	basic = document.getElementById("sthmy").innerHTML;
+	console.log(basic);
+	</script>
+
+	<div class="text_field_for_program_code">
+		<form action="www.html" method="get">
+			<textarea  class="text_area" name="description" id="text_change">
+			
+			</textarea>
+		</form>
+	</div>
+
+	<div class="focus_on_program_elements" id="hiding">	
+		{% if notification %}
+			{{ notification }}
+		{% endif %}
+	</div>
+	
+	<script>
+	function hide(){
+		if(is_hide) {
+			is_hide = false;
+			document.getElementById("hiding").innerHTML = '<div class="dropdown"><button onclick="hide()">Hide</button></div>' + '<textarea class="text_area_focus" name="focus_on" id="frama_change">' + focus  + '</textarea>';
+			
+		}
+		else {
+			is_hide = true;
+			document.getElementById("hiding").innerHTML = '<div class="dropdown"><button onclick="hide()">Unhide</button></div>';
+		}
+	}
+	</script>
+
+	<div class="container_for_tab_data" id="container">
+			
+	</div>
+	
+	<script>
+	function get_result(){
+		document.getElementById("container").innerHTML = '<textarea class="text_area_focus" name="focus_on" id="frama_change">' +result + '</textarea>';
+	}
+	function get_vcs() {
+		document.getElementById("container").innerHTML = '<div class="btn-line-group"><button>Recompile</button></div>';
+	}
+	function get_provers() {
+		document.getElementById("container").innerHTML = '<div class="btn-line-group"><a onclick="get_provers()"><button>Alt-ergo</button></a><a onclick="get_vcs()"><button>Z3</button></a><a onclick="get_result()"><button>CVC4</button></a></div>';
+	}
+	
+	
+	</script>
+
+	<div class="tab_line">
+
+	</div>
+
+	</body>
+</html>
