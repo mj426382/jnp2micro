@@ -4,6 +4,379 @@
 <head>
 <title>app interface</title>
 <style>
+	/*for easily changing colors*/
+:root {
+  --green: #F64C72;
+  --white: #ffffff;
+  --black: #000000;
+  --dark_brown: #242582;
+  --light_brown: #2F2FA2;
+  --brown: #242582;
+  --poop: #2F2FA2;
+  --light_green: #553D67;
+  --clicked_white: #ddd;
+  --lightblue : lightblue;
+}
+
+.menu_bar {
+	left: 0%;
+	right: 100%;
+	bottom: 10%;
+	top: 0%;
+	position: absolute;
+	background-color: var(--dark_brown);
+	color: var(--white);
+	display: block;
+    width: 100%;
+	height: 10%;
+	font-size: 250%;
+	font-color: var(--white);
+}
+
+.files_selecting_dialog {
+	left: 0%;
+	right: 20%;
+	bottom: 100%;
+	top: 15%;
+	position: absolute;
+	padding: 0;
+	width: 20%;
+	height: 85%;
+	background-color: var(--light_brown);
+	display: block;
+	font-size: 170%;
+	overflow: auto
+}
+
+.files_selecting_dialog_added {
+	left: 0%;
+	right: 20%;
+	bottom: 15%;
+	top: 10%;
+	position: absolute;
+	padding: 0;
+	width: 20%;
+	height: 5%;
+	background-color: var(--light_brown);
+	display: block;
+	font-size: 200%;
+	overflow: auto;
+}
+
+.text_field_for_program_code {
+	left: 20%;
+	right: 70%;
+	bottom: 70%;
+	top: 10%;
+	height: 60%;
+	width: 50%;
+	position: absolute;
+	font-size: 300%;
+	background-color: var(--lightblue);
+	display: block;
+}
+
+.text_area {
+	resize: none;
+	width: 100%;
+	height: 100%;
+	left: 0%;
+	top: 0%;
+	font-size: 300%;
+	position: absolute;
+	display: block;
+	overflow: auto;
+}
+
+.text_area_focus {
+	resize: none;
+	width: 95%;
+	height: 90%;
+	left: 1%;
+	top: 3%;
+	background-color: var(--lightblue);
+	position: relative;
+	display: block;
+}
+
+.focus_on_program_elements {
+	left: 70%;
+	right: 100%;
+	bottom: 70%;
+	top: 10%;
+	height: 60%;
+	width: 30%;
+	background-color: var(--brown);
+	position: absolute;
+	display: block;
+	font-size: 200%;
+}
+
+.container_for_tab_data {
+	background-color: var(--green);
+	color: white;
+	left: 20%;
+	right: 100%;
+	bottom: 100%;
+	top: 78%;
+	height: 22%;
+	width: 80%;
+	position: absolute;
+	display: block;
+	font-size: 100%;
+}
+
+.tab_line {
+	left: 20%;
+	right: 100%;
+	bottom: 78%;
+	top: 70%;
+	height: 8%;
+	width: 80%;
+	position: absolute;
+	background-color: var(--poop);
+	font-size: 150%;
+}
+
+.button {
+	background-color: var(--green);
+	position: absolute;
+	border: none;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	font-size: 5%;
+}
+
+.button_top :button{
+	background-color: var(--green);
+	position: absolute;
+	border: none;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	font-size: 50%;
+}
+
+/*dropdown menu*/
+.dropbtn {
+	background-color: var(--green);
+	color: white;
+	font-size: 50%;
+	border: none;
+}
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: var(--white);
+	min-width: 180px;
+	font-size: 60%;
+	box-shadow: 8px 8px 16px 16px rgba(0,0,0,-0.3);
+	z-index: 1;
+}
+
+.dropdown-content a {
+	color: black;
+	padding: 5% 10%;
+	position: relative;
+	font-size: 60%;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown-content a:hover {
+	background-color: var(--clicked_white);
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.dropdown:hover .dropbtn {
+	background-color: var(--light_green);
+}
+
+/*for buttons displayed in column*/
+.btn-group button {
+	position: relative;
+	background-color: var(--green);
+	border: 1px 99738E;
+	color: white;
+	padding: 5% 10%;
+	cursor: pointer;
+	left: 10%;
+	top: 10%;
+	width: 80%;
+	height: 5%;
+	display: block;
+}
+
+.btn-group button:not(:last-child) {
+	border-bottom: none;
+}
+
+.btn-group button:hover {
+	background-color: var(--light_green);
+}
+
+/*for buttons displayed in one line*/
+.btn-line-group button {
+	background-color: var(--green);
+	border-bottom: none;
+	border: 1px 99738E;
+	color: white;
+	padding: 1.52% 2%;
+	cursor: pointer;
+	width: 13%;
+	font-size: 48%;
+	height: 100%;
+	display: inline-block;
+	left: 1%;
+	position: relative;
+}
+
+.btn-line-group button:not(:last-child) {
+}
+
+.btn-line-group button:hover {
+	background-color: var(--light_green);
+}
+
+/*overriding for mobiles*/
+@media screen and (max-width: 800px) {
+
+	.menu_bar {
+		left: 0%;
+		right: 100%;
+		bottom: 10%;
+		top: 0%;
+		position: absolute;
+		background-color: var(--dark_brown);
+		color: var(--black);
+		display: block;
+		width: 100%;
+		height: 10%;
+		font-size: 300%;
+	}
+
+	.files_selecting_dialog {
+		left: 0%;
+		right: 100%;
+		bottom: 30%;
+		top: 10%;
+		position: absolute;
+		padding: 0;
+		width: 100%;
+		height: 20%;
+		background-color: var(--light_brown);
+		display: block;
+		font-size: 100%;
+	}
+
+	.files_selecting_dialog_added {
+		left: 0%;
+		right: 100%;
+		bottom: 0%;
+		top: 0%;
+		position: absolute;
+		width: 100%;
+		height: 0%;
+		background-color: var(--light_brown);
+		display: block;
+		overflow: auto
+	}
+
+	.text_field_for_program_code {
+		left: 0%;
+		right: 100%;
+		bottom: 70%;
+		top: 30%;
+		position: absolute;
+		width: 100%;
+		height: 40%;
+		background-color: var(--white);
+		display: block;
+	}
+
+	.text_area {
+		resize: none;
+		width: 100%;
+		height: 100%;
+		left: 0%;
+		top: 0%;
+		position: absolute;
+		display: block;
+		overflow: auto;
+	}
+
+	.focus_on_program_elements {
+		left: 0%;
+		right: 100%;
+		bottom: 100%;
+		top: 70%;
+		width: 100%;
+		height: 30%;
+		background-color: var(--brown);
+		position: absolute;
+		display: block;
+		font-size: 200%;
+	}
+
+	.container_for_tab_data {
+		background-color: var(--green);
+		color: white;
+		left: 0%;
+		right: 100%;
+		bottom: 130%;
+		top: 110%;
+		width: 100%;
+		height: 20%;
+		position: absolute;
+		display: block;
+		font-size: 250%;
+	}
+
+	.tab_line {
+		left: 0%;
+		right: 100%;
+		bottom: 110%;
+		top: 100%;
+		height: 10%;
+		width: 100%;
+		position: absolute;
+		background-color: var(--poop);
+		font-size: 100%;
+	}
+
+	.btn-group button {
+		background-color: var(--green);
+		border: 1px solid green;
+		color: white;
+		margin-top: 5%;
+		float: down;
+		padding: 3% 4%;
+		cursor: pointer;
+		width: 10%;
+		height: 100%;
+		display: inline-block;
+		left: 2%;
+		position: relative;
+	}
+
+	.btn-group button:not(:last-child) {
+		border-bottom: none;
+	}
+
+	.btn-group button:hover {
+		background-color: var(--light_green);
+	}
+}
 </style>
 </head>
 <body>

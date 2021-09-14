@@ -14,32 +14,32 @@ def add_group_task(request):
             'directory_name': request.POST.get('directory_name'),
             'filename': request.POST.get('filename')
         }
-        response = requests.post('http://127.0.0.1:2137/database/add_group_task/',data=json_data)
+        response = requests.post('http://database-docker.herokuapp.com/database/add_group_task/',data=json_data)
         return JsonResponse({}, status=200)
     else:
         return JsonResponse({}, status=400)
 
 def delete_task(request, id):
-    response = requests.get('http://127.0.0.1:2137/database/delete_task/' + str(id) + '/')
+    response = requests.get('http://database-docker.herokuapp.com/database/delete_task/' + str(id) + '/')
     print(response.content)
     return JsonResponse({}, status=200)
 
 
 def get_group_tasks(request):
     if request.method == 'GET':
-        response = requests.get('http://127.0.0.1:2137/database/get_group_tasks')
+        response = requests.get('http://database-docker.herokuapp.com/database/get_group_tasks')
         print(json.loads(response.content))
         return JsonResponse(json.loads(response.content), status=200, safe=False)
     else:
         return JsonResponse({}, status=400)
 
 def delete_group_project(request, id):
-    response = requests.get('http://127.0.0.1:2137/database/delete_group_project/' + str(id) + '/')
+    response = requests.get('http://database-docker.herokuapp.com/database/delete_group_project/' + str(id) + '/')
     return JsonResponse({}, status=200)
 
 def get_task(request, id, task_id):
     if request.method == 'GET':
-        response = requests.get('http://127.0.0.1:2137/database/get_task/' + str(id) + '/' + str(task_id) + '/')
+        response = requests.get('http://database-docker.herokuapp.com/database/get_task/' + str(id) + '/' + str(task_id) + '/')
         print(json.loads(response.content))
         return JsonResponse(json.loads(response.content), status=200, safe=False)
 
@@ -48,7 +48,7 @@ def get_task(request, id, task_id):
 
 def get_project(request, id):
     if request.method == 'GET':
-        response = requests.get('http://127.0.0.1:2137/database/get_project/' + str(id) + '/')
+        response = requests.get('http://database-docker.herokuapp.com/database/get_project/' + str(id) + '/')
         print(json.loads(response.content))
         return JsonResponse(json.loads(response.content), status=200, safe=False)
     else:
@@ -56,7 +56,7 @@ def get_project(request, id):
 
 def get_group_projects(request, login):
     if request.method == 'GET':
-        response = requests.get('http://127.0.0.1:2137/database/get_group_projects/' + login + '/')
+        response = requests.get('http://database-docker.herokuapp.com/database/get_group_projects/' + login + '/')
         print(json.loads(response.content))
         return JsonResponse(json.loads(response.content), status=200, safe=False)
     else:
@@ -72,7 +72,7 @@ def make_group_project(request):
             'owner': request.POST.get('owner'),
             'filename': request.POST.get('filename')
         }
-        response = requests.post('http://127.0.0.1:2137/database/make_group_project/',data=json_data)
+        response = requests.post('http://database-docker.herokuapp.com/database/make_group_project/',data=json_data)
         return JsonResponse({}, status=200)
     else:
         return JsonResponse({}, status=400);

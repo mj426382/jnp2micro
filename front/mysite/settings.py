@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '#7q^uht-58z-(2gt1q(j1u*j2t3kzn1b455ven@7l#a3mk3h0t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['students.mimuw.edu.pl', '127.0.0.1']
+ALLOWED_HOSTS = ['students.mimuw.edu.pl', '127.0.0.1', '0.0.0.0', '*']
 
 
 # Application definition
